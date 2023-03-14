@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BussinessLogic.Models.AuthorWithBookVM>
+
+@foreach (var item in Model.Select((value, i) => new { value, i }))
+{
+        <h4>@(item.i + 1). @(item.value.Name)</h4>
+                <table class="table table-striped">
+
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Author</th>
+                     <th scope="col">Price</th>
+                    <th scope="col">PublisheDate</th>
+
+                    <th scope="col">ISBN</th>
+                    <th scope="col">Type</th>
+                </tr>
+                </thead>
+                <tbody>
+
+            @{
+                foreach (var task in item.value.Books.Select((value, i) => new { value, i }))
+                {
+                                        <tr>
+                                            <th scope="row">@(task.i + 1)</th>
+                                            <td>@task.value.Title</td>
+                                                <td>@task.value.Description</td>
+                                                <td>@task.value.Author</td>
+                                                <td>@task.value.price</td>
+
+                                                <td>@task.value.PublishedDate</td>
+
+                                                <td>@task.value.ISBN</td>
+                                                <td>@task.value.type</td>
+                                                            <td><a asp-action="Update" asp-route-id="@task.value.Id" class="btn btn-primary">Update</a></td>
+                                                 <td><a asp-action="Delete" class="btn btn-primary">Delete</a></td>
+
+                                        </tr>
+
+                }
+            }
+
+
+
+
+                </tbody>
+            </table>
+                <a asp-action="New" class="btn btn-primary">Create</a>
+
+
+}

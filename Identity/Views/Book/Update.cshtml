@@ -1,0 +1,48 @@
+﻿
+
+
+@using DataAccess.Enum;
+
+@model BussinessLogic.Models.AddUpdateBookVM
+
+@{
+    ViewData["Title"] = "Update";
+}
+<a asp-action="Index">View All Books</a>
+<h2>Update</h2>
+<form method="post" asp-action="Update" asp-route-id="@Model.BookId">
+    <button type="submit" class="btn btn-primary">Update</button>
+
+    <div class="form-group">
+        <label asp-for="@Model.Title"></label>
+        <input asp-for="@Model.Title" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.price"></label>
+        <input asp-for="@Model.price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Author"></label>
+        <input asp-for="@Model.Author" class="form-control" />
+    </div>
+     <div class="form-group">
+        <label asp-for="@Model.Description"></label>
+        <input asp-for="@Model.Description" class="form-control" />
+    </div>
+         <div class="form-group">
+        <label asp-for="@Model.ISBN"></label>
+        <input asp-for="@Model.ISBN" class="form-control" />
+    </div>
+     <div class="form-group">
+
+        <label asp-for="@Model.type" class="form-label"></label>
+        <select class="form-select" aria-label="Default select example"  asp-for="@Model.type"  asp-items="Html.GetEnumSelectList <Genre>()">
+            <option selected="" value="">Select Book Genre</option>
+
+        </select>
+    </div>
+
+
+</form>
+    
