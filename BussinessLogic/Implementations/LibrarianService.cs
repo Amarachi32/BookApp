@@ -47,6 +47,7 @@ namespace BussinessLogic.Implementations
                 Name = u.UserName,
                 Books = u.BookList.Select(x => new BookVM
                 {
+                    Id = x.Id,
                     Title = x.Title,
                     Author= x.Author,
                     Description= x.Description,

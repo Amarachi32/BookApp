@@ -44,16 +44,16 @@ namespace BussinessLogic.Implementations
             var newBook = _mapper.Map<AddUpdateBookVM, Book>(model);
             Book bookDetails = author.BookList.SingleOrDefault(u => u.Id == newBook.Id);
 
-                       if (bookDetails != null)
-                        {
+            if (bookDetails != null)
+            {
 
-                            _mapper.Map(model, bookDetails);
-                            await _unitOfWork.SaveChangesAsync();
-                            return (true, $"update Successfully");
+                _mapper.Map(model, bookDetails);
+                await _unitOfWork.SaveChangesAsync();
+                return (true, $"update Successfully");
 
-                        }
+            }
 
-           // var newBook = _mapper.Map<AddUpdateBookVM, Book>(model);
+            // var newBook = _mapper.Map<AddUpdateBookVM, Book>(model);
 
             //var newBook = Mapper.CreateMap<Book>(model);
             author.BookList.Add(newBook);
@@ -76,8 +76,9 @@ namespace BussinessLogic.Implementations
             if (bookDetails != null)
             {
 
-                _mapper.Map(model, bookDetails);
-                var rowChanges =  await _unitOfWork.SaveChangesAsync();
+                var updateModel = _mapper.Map(model, bookDetails);
+                await _bookRepo.UpdateAsync(updateModel);
+                var rowChanges = await _unitOfWork.SaveChangesAsync();
                 return rowChanges > 0 ? (true, $"Task: {model.Title} was updated Successfully!") : (false, "Failed To save changes!");
             }
             return (false, $"user not found");
@@ -107,39 +108,59 @@ namespace BussinessLogic.Implementations
         }
 
 
-        public (AppUser author, string msg) GetBook(string AppUserId, int BookId)
+        /*public (AppUser author, string msg) GetBook(string AppUserId, int BookId)
+        {*/
+        public async Task<AddUpdateBookVM> GetBook(AddUpdateBookVM model, int id)
         {
-            //AppUser author = await _authorRepo.GetSingleByAsync(u => u.Id == model.AuthorId, include: u => u.Include(x => x.BookList), tracking: true);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            AppUser author =  await _authorRepo.GetSingleByAsync(u => u.Id == userId, include: u => u.Include(x => x.BookList), tracking: true);
 
             // var books = DbContext.Books.Include(b => b.AppUser).ToList();
-            // AppUser author = LibraryDbContext.GetAuthorsWithTheirBooks().SingleOrDefault(u => u.Id == AuthorId);
+            // AppUser author = LibraryDbContext.GetAuthorsWithTheirBooks().SingleOrDefault(u => u.Id == userId);
             //  AppUser author = _authorRepo.GetSingleBy()
-            AppUser author = null;
+           // var book = db.Books.Find(id);
+
             if (author == null)
             {
-                return (null, $"user not found");
+                return null;
             }
-            Book pickBook = author.BookList.FirstOrDefault(b => b.Id == BookId);
+
+           
+            Book pickBook = author.BookList.FirstOrDefault(b => b.Id == model.BookId);
+           // _bookRepo.UpdateAsync(pickBook)
+           // Book pickBook = author.BookList.FirstOrDefault(b => b.Id == model.BookId);
             if (pickBook != null)
             {
-                return (author, $"Book with Title:{pickBook.Title} was found");
+                _bookRepo.UpdateAsync(pickBook);
+
+/*                return new AddUpdateBookVM
+                {
+                    BookId = pickBook.Id,
+                    Title = pickBook.Title,
+                    Author = pickBook.Author,
+                };
+                  */  //_mapper.Map(model, pickBook);
+
+
 
             }
-            return (null, $"Book with Title:{pickBook.Title} was not found");
-        }
-
-        public IEnumerable<Book> GetBookList()
-        {
-            List<Book> bookList = new List<Book>();
-
-
-            //var books = LibraryDbContext.GetAuthorsWithTheirBooks().SelectMany(t => t.BookList).ToList();
-            var books = bookList;
-
-
-            return books;
+            return null;
         }
 
 
+
+    public IEnumerable<Book> GetBookList()
+    {
+        List<Book> bookList = new List<Book>();
+
+
+        //var books = LibraryDbContext.GetAuthorsWithTheirBooks().SelectMany(t => t.BookList).ToList();
+        var books = bookList;
+
+
+        return books;
     }
+
+
+}
 }

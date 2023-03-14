@@ -1,5 +1,6 @@
 ﻿using BussinessLogic.Interfaces;
 using BussinessLogic.Models;
+using DataAccess.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,10 +65,13 @@ namespace Identity.Controllers
                     return View(books);
                 }*/
 
-        public IActionResult Update()
+        public IActionResult Update(int id)
         {
-           return View(_addUpdateBookVM);
-            
+            //var model1 =  _catalogueServices.GetBook(model);
+           
+
+            return View();
+
         }
 
         [HttpPost]

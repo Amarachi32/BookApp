@@ -8,7 +8,7 @@
 <a asp-action="Index" class="btn btn-secondary">Back</a>
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<form method="post" asp-action="Save">
+<form method="post" asp-action="Save" asp-route-id="@Model.BookId">
     <button type="submit" class="btn btn-primary">Create</button>
 
     <div class="form-group">

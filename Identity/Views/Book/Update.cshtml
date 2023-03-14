@@ -1,8 +1,4 @@
-﻿
-
-
-@using DataAccess.Enum;
-
+﻿@using DataAccess.Enum;
 @model BussinessLogic.Models.AddUpdateBookVM
 
 @{
@@ -10,7 +6,7 @@
 }
 <a asp-action="Index">View All Books</a>
 <h2>Update</h2>
-<form method="post" asp-action="Update" asp-route-id="@Model.BookId">
+<form method="post" asp-action="Update">
     <button type="submit" class="btn btn-primary">Update</button>
 
     <div class="form-group">
@@ -45,4 +41,3 @@
 
 
 </form>
-    
