@@ -1,6 +1,6 @@
 ﻿@model BussinessLogic.Models.LoginUserVM
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "User Login";
 }
 
 <h1 class="bg-info text-white">Login</h1>
@@ -55,6 +55,14 @@
                   <input type="password" id="form3Example4" asp-for="@Model.Password" class="form-control" />
                   <label class="form-label" for="form3Example4" asp-for="@Model.Password">Password</label>
                 </div>
+@*                <div class="form-outline mb-4 form-group">
+                    <div class ="btn-check">
+                        <label asp-for="RememberMe">
+                        <input asp-for="RememberMe"/>
+                        @Html.DisplayNameFor(m => m.RemeberMe)
+                        </label>
+                    </div>
+                </div>*@
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">
@@ -65,8 +73,7 @@
                 <div class="text-center">
                   
                     <a class="small text-muted" href="#!">Forgot password?</a>
-                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="https://localhost:7284/Admin/Create"
-                      style="color: #393f81;">Register here</a></p>
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account?  <a style="color: #393f81;" asp-controller="Admin", asp-action="Create">Register here</a></p>
                       <p>or sign up with:</p>
                   <button type="button" class="btn btn-link btn-floating mx-1">
                     <i class="fab fa-facebook-f"></i>

@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model BussinessLogic.Models.CreateRoleVM
 @{
     ViewData["Title"] = "CREATE ROLE";
 }
@@ -9,8 +9,8 @@
 
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label for="name">Name:</label>
-        <input name="name" class="form-control" />
+        <label asp-for="RoleName"></label>
+        <input asp-for="RoleName" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-primary">Create Role </button>
 </form>

@@ -3,6 +3,7 @@ using BussinessLogic.Interfaces;
 using BussinessLogic.Models;
 using DataAccess.Entities;
 using DataAccess.Repository;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -60,7 +61,28 @@ namespace BussinessLogic.Implementations
             var rowChanges = await _unitOfWork.SaveChangesAsync();
             return rowChanges > 0 ? (true, $"Task: {model.Title} was successfully created!") : (false, "Failed To save changes!");
         }
+        public async Task<Book> GetBookAsync(int BookId)
+        {
+            // User user = ToDoListDbContext.GetUsersWithToDos().SingleOrDefault(u => u.Id == model.UserId);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            AppUser author = await _authorRepo.GetSingleByAsync(u => u.Id == userId, include: u => u.Include(x => x.BookList.Where(u => u.AppUserId == userId)), tracking: true);
+
+            if (author == null)
+            {
+                return null;
+            }
+
+            Book book = author.BookList.FirstOrDefault(t => t.Id == BookId);
+
+            if (book == null)
+            {
+                return null;
+            }
+
+            return book;
+
+        }
         public async Task<(bool Success, string msg)> UpdateAsync(AddUpdateBookVM model, int BookId)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -77,14 +99,24 @@ namespace BussinessLogic.Implementations
             {
 
                 var updateModel = _mapper.Map(model, bookDetails);
-                await _bookRepo.UpdateAsync(updateModel);
-                var rowChanges = await _unitOfWork.SaveChangesAsync();
-                return rowChanges > 0 ? (true, $"Task: {model.Title} was updated Successfully!") : (false, "Failed To save changes!");
-            }
+                //var rowChanges = await _bookRepo.UpdateAsync(updateModel);
+                var rowChanges = await _bookRepo.SaveAsync();
+
+
+                if (rowChanges > 0)
+                {
+
+
+
+                    // var rowChanges = await _unitOfWork.SaveChangesAsync();
+                  //  return rowChanges > 0 ? (true, $"Task: {model.Title} was updated Successfully!") : (false, "Failed To save changes!");
+                    return  (true, $"Task: {model.Title} was updated Successfully!") ;
+                }
+                }
             return (false, $"user not found");
         }
 
-        public async Task<(bool Success, string msg)> DeleteAsync(int BookId)
+/*        public async Task<(bool Success, string msg)> DeleteAsync(int BookId)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -105,12 +137,14 @@ namespace BussinessLogic.Implementations
                 return await _unitOfWork.SaveChangesAsync() > 0 ? (true, $"Task with Title:{pickBook.Title} was deleted") : (false, $"Delete Failed");
             }
             return (false, $"book with title: {BookId} not found");
-        }
+        }*/
 
 
         /*public (AppUser author, string msg) GetBook(string AppUserId, int BookId)
         {*/
-        public async Task<AddUpdateBookVM> GetBook(AddUpdateBookVM model, int id)
+
+
+      /*  public async Task<AddUpdateBookVM> GetBook(AddUpdateBookVM model, int id)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             AppUser author =  await _authorRepo.GetSingleByAsync(u => u.Id == userId, include: u => u.Include(x => x.BookList), tracking: true);
@@ -133,19 +167,22 @@ namespace BussinessLogic.Implementations
             {
                 _bookRepo.UpdateAsync(pickBook);
 
-/*                return new AddUpdateBookVM
+*/
+      
+
+        /*                return new AddUpdateBookVM
                 {
                     BookId = pickBook.Id,
                     Title = pickBook.Title,
                     Author = pickBook.Author,
                 };
-                  */  //_mapper.Map(model, pickBook);
+                  *//*  //_mapper.Map(model, pickBook);
 
 
 
             }
             return null;
-        }
+        }*/
 
 
 

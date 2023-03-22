@@ -1,20 +1,24 @@
 ﻿using BussinessLogic.Interfaces;
 using BussinessLogic.Models;
 using DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private IPasswordHasher<AppUser> passwordHasher;
 
 
-        public AdminController(UserManager<AppUser> usrMgr, IPasswordHasher<AppUser> passwordHash)
+        public AdminController(UserManager<AppUser> usrMgr, SignInManager<AppUser> signInManager, IPasswordHasher<AppUser> passwordHash)
         {
             _userManager = usrMgr;
+            _signInManager = signInManager;
             passwordHasher = passwordHash;
 
         }
@@ -23,9 +27,26 @@ namespace Identity.Controllers
         {
             return View(_userManager.Users);
         }
+        [AllowAnonymous]
+        public IActionResult Create() => View("Create");
 
-        public ViewResult Create() => View();
+/*        [AcceptVerbs ("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            // install jquery lib
+           var user = await _userManager.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return Json(true);
+            }else
+            {
+                return Json(false, $"Email {email}is already in use");
+            }
+        }*/
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Create(CreateUserVM user)
         {
             if (ModelState.IsValid)
@@ -39,7 +60,11 @@ namespace Identity.Controllers
                 IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
 
                 if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(appUser, isPersistent: false);
                     return RedirectToAction("Index");
+
+                }
                 else
                 {
                     foreach (IdentityError error in result.Errors)

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+@inject SignInManager<DataAccess.Entities.AppUser> signInManager;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +26,26 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                         <li class="nav-item">
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <li class="nav-item">
+                                    <button type ="submit" class=" nav-link btn btn-link py-0">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                    <li/>
+                                </form>
+                            }else
+                                {
+                                     <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Create">Register</a>
+                                      </li>
+                                          <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Register</a>
+                                          </li>
+                                }
                         </li>
                     </ul>
                 </div>

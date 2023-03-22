@@ -28,6 +28,14 @@ namespace Identity
 
 
             });
+            //policy
+       /*     builder.Services.AddAuthorization(opts => {
+                opts.AddPolicy("AspManager", policy => {
+                    policy.RequireRole("Manager");
+                    policy.RequireClaim("Coding-Skill", "ASP.NET Core MVC");
+                });
+            });*/
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<LibraryDbContext>>();
             builder.Services.AddTransient<ILibrarianServices, LibrarianService>();
             builder.Services.AddTransient<ICatalogueServices, CatalogueService>();

@@ -1,12 +1,13 @@
 ﻿@using DataAccess.Enum;
-@model BussinessLogic.Models.AddUpdateBookVM
+@*@model BussinessLogic.Models.AddUpdateBookVM*@
+@model DataAccess.Entities.Book
 
 @{
     ViewData["Title"] = "Update";
 }
 <a asp-action="Index">View All Books</a>
 <h2>Update</h2>
-<form method="post" asp-action="Update">
+<form method="post" asp-controller="Book" asp-action="Update" asp-route-id="@Model.Id">
     <button type="submit" class="btn btn-primary">Update</button>
 
     <div class="form-group">

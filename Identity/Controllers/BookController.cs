@@ -20,6 +20,7 @@ namespace Identity.Controllers
             _catalogueServices = catalogueServices;
             _addUpdateBookVM = addUpdateBookVM;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var model = await _librarianServices.GetAuthorsWithBooksAsync();
@@ -65,12 +66,11 @@ namespace Identity.Controllers
                     return View(books);
                 }*/
 
-        public IActionResult Update(int id)
+        public async Task<IActionResult> Update(int id)
         {
-            //var model1 =  _catalogueServices.GetBook(model);
-           
+            var book = await _catalogueServices.GetBookAsync(id);
 
-            return View();
+            return View(book);
 
         }
 
@@ -101,7 +101,7 @@ namespace Identity.Controllers
 
         }
 
-        public async Task<IActionResult> Delete( int BookId)
+/*        public async Task<IActionResult> Delete( int BookId)
         {
             var (success, msg) = await _catalogueServices.DeleteAsync( BookId);
 
@@ -113,7 +113,7 @@ namespace Identity.Controllers
 
             TempData["ErrMsg"] = msg;
             return RedirectToAction("Index");
-        }
+        }*/
 
     }
 }

@@ -1,11 +1,14 @@
-﻿using DataAccess.Entities;
+﻿using BussinessLogic.Models;
+using DataAccess.Entities;
 using Identity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace Identity.Controllers
 {
+   // [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
@@ -16,8 +19,8 @@ namespace Identity.Controllers
             roleManager = roleMgr;
             userManager = userMrg;
         }
-
-        public ViewResult Index() => View(roleManager.Roles);
+        
+       public ViewResult Index() => View(roleManager.Roles);
         private void Errors(IdentityResult result)
         {
             foreach (IdentityError error in result.Errors)
@@ -26,17 +29,18 @@ namespace Identity.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Create([Required] string name)
+
+        public async Task<IActionResult> Create(CreateRoleVM model)
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
+                IdentityResult result = await roleManager.CreateAsync(new IdentityRole{Name =  model.RoleName });
                 if (result.Succeeded)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Role");
                 else
                     Errors(result);
             }
-            return View(name);
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
