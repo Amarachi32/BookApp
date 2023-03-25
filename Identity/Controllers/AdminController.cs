@@ -30,21 +30,6 @@ namespace Identity.Controllers
         [AllowAnonymous]
         public IActionResult Create() => View("Create");
 
-/*        [AcceptVerbs ("Get", "Post")]
-        [AllowAnonymous]
-        public async Task<IActionResult> IsEmailInUse(string email)
-        {
-            // install jquery lib
-           var user = await _userManager.FindByEmailAsync(email);
-            if(user == null)
-            {
-                return Json(true);
-            }else
-            {
-                return Json(false, $"Email {email}is already in use");
-            }
-        }*/
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Create(CreateUserVM user)

@@ -38,7 +38,6 @@ namespace Identity.Controllers
                 if (appUser != null)
                 {
                     await signInManager.SignOutAsync();
-                    //logn.RememberMe = 3 false;4) lock account on failure
                     Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(appUser, login.Password, false, false);
                     if (result.Succeeded)
                         // return Redirect(login.ReturnUrl ?? "/");
@@ -48,10 +47,7 @@ namespace Identity.Controllers
             }
             return View(login);
         }
-        /*        public IActionResult Index()
-                {
-                    return View();
-                }*/
+
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();

@@ -9,19 +9,12 @@ namespace Identity.Controllers
 {
     public class HomeController : Controller
     {
-        /*private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }*/
         private UserManager<AppUser> userManager;
         public HomeController(UserManager<AppUser> userMgr)
         {
             userManager = userMgr;
         }
-
-       // [Authorize(Roles = "Manager")]
         [Authorize]
         public async Task<IActionResult> Index()
         {

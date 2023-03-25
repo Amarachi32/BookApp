@@ -11,10 +11,8 @@ namespace BussinessLogic.Interfaces
     public interface ICatalogueServices
     {
          Task <(bool Success, string msg)> AddorUpdateAsync(AddUpdateBookVM model);
-        //(AppUser author, string msg) GetBook(string AppUserId, int BookId);
-        // Task<AddUpdateBookVM> GetBook(AddUpdateBookVM model, int id);
         Task<Book> GetBookAsync(int BookId);
-       // Task<(bool Success, string msg)> DeleteAsync( int BookId);
+
         public IEnumerable<Book> GetBookList();
         Task<(bool Success, string msg)> UpdateAsync(AddUpdateBookVM model, int BookId);
 

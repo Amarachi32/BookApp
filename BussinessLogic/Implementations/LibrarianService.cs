@@ -38,10 +38,6 @@ namespace BussinessLogic.Implementations
 
         public async Task<IEnumerable<AuthorWithBookVM>> GetAuthorsWithBooksAsync()
         {
-            // return _authorRepo.Select(u => new AuthorWithBookVM { 
-
-           // var userId = HttpContext.Current.User.Identity.GetUserId();
-           // var books = db.Books.Where(b => b.UserId == userId).ToList();
 
             return (await _authorRepo.GetAllAsync(include: u => u.Include(t => t.BookList))).Select(u => new AuthorWithBookVM { 
                 Name = u.UserName,
@@ -60,19 +56,5 @@ namespace BussinessLogic.Implementations
             
             }).ToList();
         }
-
-/*        public void GetBooks()
-        {
-            var authorId = 1;
-            var author = db.Authors
-                .Include(a => a.Books)
-                .FirstOrDefault(a => a.AuthorId == authorId);
-
-            if (author != null)
-            {
-                var books = author.Books.ToList();
-                // do something with the books
-            }
-        }*/
     }
 }
