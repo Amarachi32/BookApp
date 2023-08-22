@@ -3,7 +3,6 @@ using BussinessLogic.Interfaces;
 using BussinessLogic.Models;
 using DataAccess.Entities;
 using DataAccess.Repository;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;

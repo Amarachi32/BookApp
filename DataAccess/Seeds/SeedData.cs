@@ -11,12 +11,14 @@ namespace DataAccess.Seeds
     {
         private readonly UserManager<AppUser> _userManager;
 
-        public SeedData(UserManager<AppUser> userManager) {
+        public SeedData(UserManager<AppUser> userManager)
+        {
             _userManager = userManager;
         }
         public static async Task EnsurePopulatedAsync(IApplicationBuilder app)
         {
             LibraryDbContext context = app.ApplicationServices.CreateScope().ServiceProvider
                 .GetRequiredService<LibraryDbContext>();
-}
+        }
+    }
 }
